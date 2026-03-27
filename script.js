@@ -49,8 +49,26 @@ function init() {
  Returns a Promise that resolves with the meal object
  */
 function fetchRandomMeal() {
-    // Fill in
-}
+      fetch("https://www.themealdb.com/api/json/v1/1/random.php")
+        .then(res => res.json())         // hint: .json()
+        .then(data => {
+          const meal=data.meals[0]
+
+          const mealName=document.createElement("h2")
+          mealName.textContent=meal.strMeal
+          document.getElementById("meal-container").appendChild(mealName)
+
+          const mealThumb=document.createElement("img")
+          mealThumb.src=meal.strMealThumb //henter fra console
+          document.getElementById("meal-container").appendChild(mealThumb)
+
+          const mealInstructions=document.createElement("h2")
+          mealInstructions.textContent=meal.strInstructions
+          document.getElementById("meal-container").appendChild(mealInstructions)
+
+          
+
+})}
 
 /*
 Display Meal Data in the DOM
