@@ -139,6 +139,9 @@ Fetch a Random Cocktail (backup in case nothing is found by the search)
 Returns a Promise that resolves to cocktail object
 */
 function fetchRandomCocktail() {
+
+
+
     // Fill in
 }
 
@@ -146,8 +149,27 @@ function fetchRandomCocktail() {
 Display Cocktail Data in the DOM
 */
 function displayCocktailData(cocktail) {
-    // Fill in
+    const drinkName = document.createElement("h2");
+    drinkName.textContent = cocktail.strDrink;
+    document.getElementById("cocktail-container").appendChild(drinkName); 
+
+    const drinkThumb = document.createElement("img");
+    drinkThumb.src = cocktail.strDrinkThumb; /*henter fra console*/
+    document.getElementById("cocktail-container").appendChild(drinkThumb); /*koble til html*/
+
+    const ingredientsList = document.createElement("ul");
+    for (let i = 1; i <= 15; i++) {
+        const ingredient = cocktail[`strIngredient${i}`];
+        if (ingredient && ingredient.trim() !== "") {
+            const li = document.createElement("li");
+            li.textContent = `${ingredient}`;
+            ingredientsList.appendChild(li);
+        }
+    }
+    document.getElementById("cocktail-container").appendChild(ingredientsList);
 }
+
+
 
 /*
 Call init() when the page loads
