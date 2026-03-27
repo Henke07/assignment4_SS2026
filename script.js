@@ -66,7 +66,41 @@ function fetchRandomMeal() {
           mealInstructions.textContent=meal.strInstructions
           document.getElementById("meal-container").appendChild(mealInstructions)
 
-          
+                    //sorterer ingredienser 
+        const ingredientList = document.createElement("ul")
+
+        const underoverskrift=document.createElement("h3")
+        underoverskrift.textContent="Ingredients"
+        ingredientList.appendChild(underoverskrift)
+
+        for (let nummer = 1; nummer <=20; nummer++) {
+          const ingredient= meal["strIngredient"+nummer]
+
+          if(ingredient && ingredient.trim() !=="") {
+            const li= document.createElement("li")
+            li.textContent=ingredient
+            ingredientList.appendChild(li)
+          }
+        }
+        document.getElementById("meal-container").appendChild(ingredientList)
+
+      //sorterer measures
+        const measuresList = document.createElement("ul")
+
+        const underoverskrift2=document.createElement("h3")
+        underoverskrift2.textContent="Measures"
+        measuresList.appendChild(underoverskrift2)
+
+        for( let nummer=1; nummer <=20; nummer++){
+          const measure =meal["strMeasure"+nummer]
+
+          if (measure && measure.trim() !==""){
+            const li = document.createElement("li")
+            li.textContent=measure
+            measuresList.appendChild(li)
+      }  }
+
+        document.getElementById("meal-container").appendChild(measuresList)
 
 })}
 
