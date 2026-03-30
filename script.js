@@ -50,7 +50,7 @@ function init() {
  */
 function fetchRandomMeal() {
       return fetch("https://www.themealdb.com/api/json/v1/1/random.php")
-        .then(res => res.json())         // hint: .json()
+        .then(res => res.json())       
         .then(data => {
           const meal=data.meals[0]
           console.log(meal)
@@ -72,27 +72,14 @@ function displayMealData(meal) {
           mealThumb.src=meal.strMealThumb //henter fra console
           document.getElementById("meal-container").appendChild(mealThumb)
 
-          const mealInstructions=document.createElement("h2")
+          const mealInstructions=document.createElement("p")
           mealInstructions.textContent=meal.strInstructions
           document.getElementById("meal-container").appendChild(mealInstructions)
 
-                    //sorterer ingredienser 
-        const ingredientList = document.createElement("ul")
-
-        const underoverskrift=document.createElement("h3")
-        underoverskrift.textContent="Ingredients"
-        ingredientList.appendChild(underoverskrift)
-
-        for (let nummer = 1; nummer <=20; nummer++) {
-          const ingredient= meal["strIngredient"+nummer]
-
-          if(ingredient && ingredient.trim() !=="") {
-            const li= document.createElement("li")
-            li.textContent=ingredient
-            ingredientList.appendChild(li)
-          }
-        }
-        document.getElementById("meal-container").appendChild(ingredientList)
+          const mealList=document.createElement("div")
+          mealList.style.display="flex"
+          mealList.style.gap = "2rem"
+          
 
       //sorterer measures
         const measuresList = document.createElement("ul")
@@ -110,8 +97,27 @@ function displayMealData(meal) {
             measuresList.appendChild(li)
       }  }
 
-        document.getElementById("meal-container").appendChild(measuresList)
+        mealList.appendChild(measuresList)
 
+                            //sorterer ingredienser 
+        const ingredientList = document.createElement("ul")
+
+        const underoverskrift=document.createElement("h3")
+        underoverskrift.textContent="Ingredients"
+        ingredientList.appendChild(underoverskrift)
+
+        for (let nummer = 1; nummer <=20; nummer++) {
+          const ingredient= meal["strIngredient"+nummer]
+
+          if(ingredient && ingredient.trim() !=="") {
+            const li= document.createElement("li")
+            li.textContent=ingredient
+            ingredientList.appendChild(li)
+          }
+        }
+        mealList.appendChild(ingredientList)
+
+        document.getElementById("meal-container").appendChild(mealList)
 }
 
 
@@ -121,6 +127,7 @@ Looks up category in our map, or defaults to 'cola'
 */
 function mapMealCategoryToDrinkIngredient(category) {
   if (!category) return "cola";
+  console.log(mealCategoryToCocktailIngredient[category])
   return mealCategoryToCocktailIngredient[category] || "cola";
 }
 
@@ -132,7 +139,16 @@ Don't forget encodeURIComponent()
 If no cocktails found, fetch random
 */
 function fetchCocktailByDrinkIngredient(drinkIngredient) {
-    // Fill in
+  return fetch("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + encodeURIComponent(drinkIngredient))
+    .then(res => res.json())
+    .then(data => {
+      if (!data.drinks){
+        return fetchRandomCocktail()
+      }
+      const cocktail=data.drinks[0]
+      console.log(cocktail)
+      return cocktail
+    })
 }
 
 /*
@@ -140,11 +156,15 @@ Fetch a Random Cocktail (backup in case nothing is found by the search)
 Returns a Promise that resolves to cocktail object
 */
 function fetchRandomCocktail() {
-
-
+        return fetch("https://www.thecocktaildb.com/api/json/v1/1/random.php")
+        .then (response => response.json()) //svarer til fetchen om at ja her er posten
+        .then (data => {
+            const drink=data.drinks[0] // lettere å skrive bare drink
+            return drink
+        })}
 
     // Fill in
-}
+
 
 /*
 Display Cocktail Data in the DOM
@@ -159,6 +179,11 @@ function displayCocktailData(cocktail) {
     document.getElementById("cocktail-container").appendChild(drinkThumb); /*koble til html*/
 
     const ingredientsList = document.createElement("ul");
+
+    const underoverskrift=document.createElement("h3")
+    underoverskrift.textContent="Ingredients"
+    ingredientsList.appendChild(underoverskrift)
+
     for (let i = 1; i <= 15; i++) {
         const ingredient = cocktail[`strIngredient${i}`];
         if (ingredient && ingredient.trim() !== "") {
